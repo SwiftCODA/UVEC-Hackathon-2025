@@ -88,10 +88,10 @@ export const ResumeBuilder = () => {
         break;
       case 'education':
         const hasValidEducation = resumeData.education.some(
-          edu => edu.credential && edu.school
+          edu => edu.credential && edu.school && !!edu.endDate
         );
         if (!hasValidEducation) {
-          toast.error('Please add at least one education entry with credential and school');
+          toast.error('Please add at least one education entry with credential, school, and graduation date');
           return false;
         }
         break;

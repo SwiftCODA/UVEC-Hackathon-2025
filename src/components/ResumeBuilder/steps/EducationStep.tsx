@@ -229,7 +229,7 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
                 <MonthYearPicker
                   value={edu.endDate}
                   onChange={(val: string) => updateEducation(edu.id, 'endDate', val)}
-                  label={edu.current ? "Expected Graduation Date" : "Graduation Date"}
+                  label={edu.current ? "Expected Graduation Date *" : "Graduation Date *"}
                 />
               </div>
             </div>
