@@ -10,25 +10,7 @@ function splitName(fullName: string | undefined) {
   return { firstName, lastName };
 }
 
-// Extract a GitHub username from a URL or return the raw string if it's likely a username
-function extractGithubUsername(githubUrlOrUser: string | undefined): string | undefined {
-  if (!githubUrlOrUser) return undefined;
-  const val = githubUrlOrUser.trim();
-  try {
-    // If it's a URL, parse and take the first path segment
-    if (/^https?:\/\//i.test(val)) {
-      const url = new URL(val);
-      const path = url.pathname.replace(/^\/+/, "");
-      const user = path.split("/")[0];
-      return user || undefined;
-    }
-  } catch {
-    // fall through and treat as plain string
-  }
-  // If it looks like a username (no spaces, no slashes), return as-is
-  if (!/[\s/]/.test(val)) return val;
-  return undefined;
-}
+
 
 export async function POST(request: Request) {
   const data = await request.json();
@@ -82,7 +64,7 @@ export async function POST(request: Request) {
     lastName,
     city,
     stateProvinceAbbreviation,
-    githubUsername: extractGithubUsername(basic.githubUrl),
+    githubUsername: basic.githubUsername || undefined,
     linkedinUrl: basic.linkedinUrl || undefined,
     phoneNumber: basic.phone || undefined,
     emailAddress: basic.email || undefined,

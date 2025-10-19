@@ -155,13 +155,13 @@ export const BasicInfoStep = ({ data, onChange }: BasicInfoStepProps) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="githubUrl">GitHub</Label>
+            <Label htmlFor="githubUsername">GitHub Username</Label>
             <Input
-              id="githubUrl"
-              type="url"
-              value={data.githubUrl || ''}
-              onChange={(e) => handleChange('githubUrl', e.target.value)}
-              placeholder="https://github.com/your-handle"
+              id="githubUsername"
+              type="text"
+              value={data.githubUsername || ''}
+              onChange={(e) => handleChange('githubUsername', e.target.value)}
+              placeholder="your-github-handle"
               className="mt-1.5"
             />
           </div>

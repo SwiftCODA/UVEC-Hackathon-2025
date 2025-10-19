@@ -20,7 +20,7 @@ const initialData: ResumeData = {
     country: '',
     stateProvince: '',
     city: '',
-    githubUrl: '',
+  githubUsername: '',
     linkedinUrl: '',
   },
   summary: '',
@@ -47,7 +47,6 @@ const initialData: ResumeData = {
     {
       id: crypto.randomUUID(),
       name: '',
-      organization: '',
       startDate: '',
       endDate: '',
       current: false,
