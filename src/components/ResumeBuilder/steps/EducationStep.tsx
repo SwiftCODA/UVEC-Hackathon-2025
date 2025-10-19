@@ -159,7 +159,7 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor={`faculty-${edu.id}`}>Faculty</Label>
+                <Label htmlFor={`faculty-${edu.id}`}>Faculty *</Label>
                 <select
                   id={`faculty-${edu.id}`}
                   className="mt-1.5 w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -190,7 +190,7 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
                 )}
               </div>
               <div>
-                <Label htmlFor={`major-${edu.id}`}>Major</Label>
+                <Label htmlFor={`major-${edu.id}`}>Major *</Label>
                 <select
                   id={`major-${edu.id}`}
                   className="mt-1.5 w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"

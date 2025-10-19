@@ -94,10 +94,10 @@ export const ResumeBuilder = () => {
             case 'education': {
                 if (resumeData.education.length === 0) break;
                 const allValid = resumeData.education.every(
-                    edu => edu.credential && edu.school && !!edu.endDate
+                    edu => edu.credential && edu.faculty && edu.major && edu.school && !!edu.endDate
                 );
                 if (!allValid) {
-                    toast.error('Please fill in credential, school, and graduation date for all education entries or delete incomplete ones.');
+                    toast.error('Please fill in credential, faculty, major, school, and graduation date for all education entries or delete incomplete ones.');
                     return false;
                 }
                 break;
