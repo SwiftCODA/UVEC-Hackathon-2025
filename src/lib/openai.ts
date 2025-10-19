@@ -13,7 +13,7 @@ export namespace OpenAIPrompts {
             githubUsername?: string
             linkedinUrl?: string
             phoneNumber?: string
-            emailAddress?: string
+            emailAddress: string
             education?: ({
                 credential: string
                 faculty: string

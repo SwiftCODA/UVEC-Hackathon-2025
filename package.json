@@ -5,8 +5,16 @@
     "scripts": {
         "dev": "next dev --turbopack",
         "build": "next build --turbopack",
+        "build:docker": "next build --turbopack",
         "start": "next start",
-        "lint": "eslint"
+        "lint": "eslint",
+        "docker:build": "docker-compose build",
+        "docker:up": "docker-compose up",
+        "docker:up:build": "docker-compose up --build",
+        "docker:down": "docker-compose down",
+        "docker:logs": "docker-compose logs -f",
+        "docker:restart": "docker-compose restart",
+        "docker:clean": "docker-compose down -v --rmi all"
     },
     "contributors": [
         {
@@ -34,16 +42,19 @@
         "lucide-react": "^0.462.0",
         "next": "15.5.6",
         "next-themes": "^0.3.0",
+        "nunjucks": "^3.2.4",
         "openai": "^6.5.0",
         "react": "19.1.0",
         "react-dom": "19.1.0",
         "sonner": "^1.7.4",
-        "tailwind-merge": "^2.6.0"
+        "tailwind-merge": "^2.6.0",
+        "zod": "^4.1.12"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^20",
+        "@types/nunjucks": "^3",
         "@types/react": "^19",
         "@types/react-dom": "^19",
         "eslint": "^9",
