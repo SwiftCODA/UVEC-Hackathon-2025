@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Trash2 } from "lucide-react";
 import { WorkExperience } from "../types";
+import { MonthYearPicker } from "../MonthYearPicker";
 
 interface ExperienceStepProps {
   data: WorkExperience[];
@@ -90,25 +91,17 @@ export const ExperienceStep = ({ data, onChange }: ExperienceStepProps) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor={`startDate-${exp.id}`}>Start Date *</Label>
-                <Input
-                  id={`startDate-${exp.id}`}
-                  type="month"
+                <MonthYearPicker
                   value={exp.startDate}
-                  onChange={(e) => updateExperience(exp.id, 'startDate', e.target.value)}
-                  className="mt-1.5"
+                  onChange={(val: string) => updateExperience(exp.id, 'startDate', val)}
+                  label="Start Date *"
                 />
               </div>
-
               <div>
-                <Label htmlFor={`endDate-${exp.id}`}>End Date</Label>
-                <Input
-                  id={`endDate-${exp.id}`}
-                  type="month"
+                <MonthYearPicker
                   value={exp.endDate}
-                  onChange={(e) => updateExperience(exp.id, 'endDate', e.target.value)}
-                  className="mt-1.5"
-                  disabled={exp.current}
+                  onChange={(val: string) => updateExperience(exp.id, 'endDate', val)}
+                  label="End Date"
                 />
               </div>
             </div>

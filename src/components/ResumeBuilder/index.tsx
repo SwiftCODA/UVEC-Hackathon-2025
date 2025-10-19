@@ -6,19 +6,22 @@ import { toast } from "sonner";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { PreviewPanel } from "./PreviewPanel";
 import { BasicInfoStep } from "./steps/BasicInfoStep";
-import { SummaryStep } from "./steps/SummaryStep";
 import { ExperienceStep } from "./steps/ExperienceStep";
 import { EducationStep } from "./steps/EducationStep";
 import { SkillsStep } from "./steps/SkillsStep";
-import { AdditionalStep } from "./steps/AdditionalStep";
-import { ResumeData, Step, WorkExperience, Education } from "./types";
+import { ProjectsStep } from "./steps/ProjectsStep";
+import { ResumeData, Step, WorkExperience, Education, Project } from "./types";
 
 const initialData: ResumeData = {
   basicInfo: {
     name: '',
     email: '',
     phone: '',
-    location: '',
+    country: '',
+    stateProvince: '',
+    city: '',
+    githubUrl: '',
+    linkedinUrl: '',
   },
   summary: '',
   experience: [{
@@ -32,21 +35,29 @@ const initialData: ResumeData = {
   }],
   education: [{
     id: crypto.randomUUID(),
-    degree: '',
+    credential: '',
+    faculty: '',
+    major: '',
     school: '',
-    startDate: '',
     endDate: '',
     current: false,
   }],
   skills: [],
-  additional: {
-    certifications: [],
-    projects: [],
-    achievements: [],
-  },
+  projects: [
+    {
+      id: crypto.randomUUID(),
+      name: '',
+      organization: '',
+      startDate: '',
+      endDate: '',
+      current: false,
+      link: '',
+      description: '',
+    },
+  ],
 };
 
-const steps: Step[] = ['basic', 'summary', 'experience', 'education', 'skills', 'additional'];
+const steps: Step[] = ['basic', 'experience', 'education', 'skills', 'projects'];
 
 export const ResumeBuilder = () => {
   const [currentStep, setCurrentStep] = useState<Step>('basic');
@@ -65,12 +76,7 @@ export const ResumeBuilder = () => {
           return false;
         }
         break;
-      case 'summary':
-        if (!resumeData.summary.trim()) {
-          toast.error('Please write a professional summary');
-          return false;
-        }
-        break;
+      // summary removed
       case 'experience':
         const hasValidExperience = resumeData.experience.some(
           exp => exp.jobTitle && exp.company && exp.startDate
@@ -82,16 +88,25 @@ export const ResumeBuilder = () => {
         break;
       case 'education':
         const hasValidEducation = resumeData.education.some(
-          edu => edu.degree && edu.school && edu.startDate
+          edu => edu.credential && edu.school
         );
         if (!hasValidEducation) {
-          toast.error('Please add at least one education entry with degree, school, and start date');
+          toast.error('Please add at least one education entry with credential and school');
           return false;
         }
         break;
       case 'skills':
         if (resumeData.skills.length === 0) {
           toast.error('Please add at least one skill');
+          return false;
+        }
+        break;
+      case 'projects':
+        const hasValidProject = resumeData.projects.some(
+          p => p.name && p.startDate
+        );
+        if (!hasValidProject) {
+          toast.error('Please add at least one project with name and start date');
           return false;
         }
         break;
@@ -159,13 +174,7 @@ export const ResumeBuilder = () => {
             onChange={(data) => setResumeData({ ...resumeData, basicInfo: data })}
           />
         );
-      case 'summary':
-        return (
-          <SummaryStep
-            data={resumeData.summary}
-            onChange={(data: string) => setResumeData({ ...resumeData, summary: data })}
-          />
-        );
+      // summary removed
       case 'experience':
         return (
           <ExperienceStep
@@ -187,15 +196,11 @@ export const ResumeBuilder = () => {
             onChange={(data: string[]) => setResumeData({ ...resumeData, skills: data })}
           />
         );
-      case 'additional':
+      case 'projects':
         return (
-          <AdditionalStep
-            data={resumeData.additional}
-            onChange={(data: {
-              certifications: string[];
-              projects: string[];
-              achievements: string[];
-            }) => setResumeData({ ...resumeData, additional: data })}
+          <ProjectsStep
+            data={resumeData.projects}
+            onChange={(data: Project[]) => setResumeData({ ...resumeData, projects: data })}
           />
         );
     }

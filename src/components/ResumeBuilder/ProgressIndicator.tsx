@@ -9,11 +9,10 @@ interface ProgressIndicatorProps {
 
 const steps: { id: Step; label: string }[] = [
   { id: 'basic', label: 'Basic Info' },
-  { id: 'summary', label: 'Summary' },
   { id: 'experience', label: 'Experience' },
   { id: 'education', label: 'Education' },
   { id: 'skills', label: 'Skills' },
-  { id: 'additional', label: 'Additional' },
+  { id: 'projects', label: 'Projects' },
 ];
 
 export const ProgressIndicator = ({ currentStep, completedSteps }: ProgressIndicatorProps) => {

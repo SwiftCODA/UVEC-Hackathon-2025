@@ -13,11 +13,21 @@ interface SkillsStepProps {
 export const SkillsStep = ({ data, onChange }: SkillsStepProps) => {
   const [inputValue, setInputValue] = useState('');
 
+  const tokenize = (raw: string): string[] =>
+    raw
+      .split(/[;,\n,]+/g)
+      .map((s) => s.trim())
+      .filter(Boolean);
+
   const addSkill = () => {
-    if (inputValue.trim() && !data.includes(inputValue.trim())) {
-      onChange([...data, inputValue.trim()]);
-      setInputValue('');
+    const tokens = tokenize(inputValue);
+    if (tokens.length === 0) return;
+    const existingLC = new Set(data.map((s) => s.toLowerCase()));
+    const deduped = tokens.filter((t) => !existingLC.has(t.toLowerCase()));
+    if (deduped.length > 0) {
+      onChange([...data, ...deduped]);
     }
+    setInputValue('');
   };
 
   const removeSkill = (skill: string) => {
@@ -53,7 +63,7 @@ export const SkillsStep = ({ data, onChange }: SkillsStepProps) => {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground mt-2">
-          Press Enter or click Add to add a skill
+          Tip: Paste or type multiple skills separated by commas, semicolons, or new lines. Press Enter or click Add.
         </p>
       </div>
 

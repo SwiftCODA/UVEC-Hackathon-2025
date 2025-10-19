@@ -1,10 +1,51 @@
 "use client";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Trash2 } from "lucide-react";
 import { Education } from "../types";
+import { MonthYearPicker } from "../MonthYearPicker";
+
+const CREDENTIAL_OPTIONS = [
+  "Bachelor's",
+  "Master's",
+  "Doctorate (PhD)",
+  "Associate's",
+  "Diploma",
+  "Certificate",
+  "High School Diploma",
+];
+
+const FACULTY_OPTIONS = [
+  "Engineering",
+  "Arts",
+  "Science",
+  "Business",
+  "Education",
+  "Health Sciences",
+  "Law",
+  "Medicine",
+  "Social Sciences",
+  "Computing & IT",
+];
+
+const MAJOR_OPTIONS = [
+  "Computer Science",
+  "Software Engineering",
+  "Information Technology",
+  "Data Science",
+  "Electrical Engineering",
+  "Mechanical Engineering",
+  "Business Administration",
+  "Finance",
+  "Marketing",
+  "Biology",
+  "Chemistry",
+  "Mathematics",
+  "Physics",
+];
 
 interface EducationStepProps {
   data: Education[];
@@ -12,14 +53,25 @@ interface EducationStepProps {
 }
 
 export const EducationStep = ({ data, onChange }: EducationStepProps) => {
+  const [showCustom, setShowCustom] = useState<{
+    credential: Record<string, boolean>;
+    faculty: Record<string, boolean>;
+    major: Record<string, boolean>;
+  }>({ credential: {}, faculty: {}, major: {} });
+
+  const toggleCustom = (field: 'credential' | 'faculty' | 'major', id: string, show: boolean) => {
+    setShowCustom(prev => ({ ...prev, [field]: { ...prev[field], [id]: show } }));
+  };
+
   const addEducation = () => {
     onChange([
       ...data,
       {
         id: crypto.randomUUID(),
-        degree: '',
+        credential: '',
+        faculty: '',
+        major: '',
         school: '',
-        startDate: '',
         endDate: '',
         current: false,
       },
@@ -64,14 +116,35 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor={`degree-${edu.id}`}>Degree *</Label>
-                <Input
-                  id={`degree-${edu.id}`}
-                  value={edu.degree}
-                  onChange={(e) => updateEducation(edu.id, 'degree', e.target.value)}
-                  placeholder="Bachelor of Science in Computer Science"
-                  className="mt-1.5"
-                />
+                <Label htmlFor={`credential-${edu.id}`}>Credential *</Label>
+                <select
+                  id={`credential-${edu.id}`}
+                  className="mt-1.5 w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  value={showCustom.credential[edu.id] ? "_other" : (CREDENTIAL_OPTIONS.includes(edu.credential) ? edu.credential : "")}
+                  onChange={(e) => {
+                    if (e.target.value === "_other") {
+                      toggleCustom('credential', edu.id, true);
+                      updateEducation(edu.id, 'credential', '');
+                    } else {
+                      toggleCustom('credential', edu.id, false);
+                      updateEducation(edu.id, 'credential', e.target.value);
+                    }
+                  }}
+                >
+                  <option value="">Select credential</option>
+                  {CREDENTIAL_OPTIONS.map(opt => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                  <option value="_other">Other</option>
+                </select>
+                {(showCustom.credential[edu.id] || (!!edu.credential && !CREDENTIAL_OPTIONS.includes(edu.credential))) && (
+                  <Input
+                    className="mt-2"
+                    placeholder="Type your credential"
+                    value={edu.credential}
+                    onChange={(e) => updateEducation(edu.id, 'credential', e.target.value)}
+                  />
+                )}
               </div>
 
               <div>
@@ -88,26 +161,75 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor={`startDate-${edu.id}`}>Start Date *</Label>
-                <Input
-                  id={`startDate-${edu.id}`}
-                  type="month"
-                  value={edu.startDate}
-                  onChange={(e) => updateEducation(edu.id, 'startDate', e.target.value)}
-                  className="mt-1.5"
-                />
+                <Label htmlFor={`faculty-${edu.id}`}>Faculty</Label>
+                <select
+                  id={`faculty-${edu.id}`}
+                  className="mt-1.5 w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  value={showCustom.faculty[edu.id] ? "_other" : (FACULTY_OPTIONS.includes(edu.faculty) ? edu.faculty : "")}
+                  onChange={(e) => {
+                    if (e.target.value === "_other") {
+                      toggleCustom('faculty', edu.id, true);
+                      updateEducation(edu.id, 'faculty', '');
+                    } else {
+                      toggleCustom('faculty', edu.id, false);
+                      updateEducation(edu.id, 'faculty', e.target.value);
+                    }
+                  }}
+                >
+                  <option value="">Select faculty</option>
+                  {FACULTY_OPTIONS.map(opt => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                  <option value="_other">Other</option>
+                </select>
+                {(showCustom.faculty[edu.id] || (!!edu.faculty && !FACULTY_OPTIONS.includes(edu.faculty))) && (
+                  <Input
+                    className="mt-2"
+                    placeholder="Type your faculty"
+                    value={edu.faculty}
+                    onChange={(e) => updateEducation(edu.id, 'faculty', e.target.value)}
+                  />
+                )}
               </div>
-
               <div>
-                <Label htmlFor={`endDate-${edu.id}`}>
-                  {edu.current ? "Expected Graduation Date" : "End Date"}
-                </Label>
-                <Input
-                  id={`endDate-${edu.id}`}
-                  type="month"
+                <Label htmlFor={`major-${edu.id}`}>Major</Label>
+                <select
+                  id={`major-${edu.id}`}
+                  className="mt-1.5 w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  value={showCustom.major[edu.id] ? "_other" : (MAJOR_OPTIONS.includes(edu.major) ? edu.major : "")}
+                  onChange={(e) => {
+                    if (e.target.value === "_other") {
+                      toggleCustom('major', edu.id, true);
+                      updateEducation(edu.id, 'major', '');
+                    } else {
+                      toggleCustom('major', edu.id, false);
+                      updateEducation(edu.id, 'major', e.target.value);
+                    }
+                  }}
+                >
+                  <option value="">Select major</option>
+                  {MAJOR_OPTIONS.map(opt => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                  <option value="_other">Other</option>
+                </select>
+                {(showCustom.major[edu.id] || (!!edu.major && !MAJOR_OPTIONS.includes(edu.major))) && (
+                  <Input
+                    className="mt-2"
+                    placeholder="Type your major"
+                    value={edu.major}
+                    onChange={(e) => updateEducation(edu.id, 'major', e.target.value)}
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2">
+                <MonthYearPicker
                   value={edu.endDate}
-                  onChange={(e) => updateEducation(edu.id, 'endDate', e.target.value)}
-                  className="mt-1.5"
+                  onChange={(val: string) => updateEducation(edu.id, 'endDate', val)}
+                  label={edu.current ? "Expected Graduation Date" : "Graduation Date"}
                 />
               </div>
             </div>

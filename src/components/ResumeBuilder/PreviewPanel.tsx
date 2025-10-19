@@ -1,6 +1,6 @@
 "use client";
 import { ResumeData } from "./types";
-import { Mail, Phone, MapPin, Briefcase, GraduationCap } from "lucide-react";
+import { Mail, Phone, MapPin, Briefcase, GraduationCap, Github, Linkedin } from "lucide-react";
 
 interface PreviewPanelProps {
   data: ResumeData;
@@ -31,22 +31,43 @@ export const PreviewPanel = ({ data }: PreviewPanelProps) => {
                   <span>{data.basicInfo.phone}</span>
                 </div>
               )}
-              {data.basicInfo.location && (
+              {(data.basicInfo.city || data.basicInfo.stateProvince || data.basicInfo.country) && (
                 <div className="flex items-center gap-2">
                   <MapPin className="h-3.5 w-3.5" />
-                  <span>{data.basicInfo.location}</span>
+                  <span>
+                    {[data.basicInfo.city, data.basicInfo.stateProvince, data.basicInfo.country]
+                      .filter(Boolean)
+                      .join(', ')}
+                  </span>
                 </div>
+              )}
+              {data.basicInfo.githubUrl && (
+                <a
+                  className="flex items-center gap-2 hover:underline"
+                  href={data.basicInfo.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Github className="h-3.5 w-3.5" />
+                  <span>GitHub</span>
+                </a>
+              )}
+              {data.basicInfo.linkedinUrl && (
+                <a
+                  className="flex items-center gap-2 hover:underline"
+                  href={data.basicInfo.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Linkedin className="h-3.5 w-3.5" />
+                  <span>LinkedIn</span>
+                </a>
               )}
             </div>
           </div>
         )}
 
-        {data.summary && (
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-2">Summary</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">{data.summary}</p>
-          </div>
-        )}
+        {/* Summary section removed */}
 
         {data.experience.some(exp => exp.jobTitle || exp.company) && (
           <div>
@@ -76,7 +97,7 @@ export const PreviewPanel = ({ data }: PreviewPanelProps) => {
           </div>
         )}
 
-        {data.education.some(edu => edu.degree || edu.school) && (
+        {data.education.some(edu => edu.credential || edu.school || edu.major || edu.faculty) && (
           <div>
             <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
               <GraduationCap className="h-4 w-4" />
@@ -84,14 +105,24 @@ export const PreviewPanel = ({ data }: PreviewPanelProps) => {
             </h3>
             <div className="space-y-3">
               {data.education
-                .filter(edu => edu.degree || edu.school)
+                .filter(edu => edu.credential || edu.school || edu.major || edu.faculty)
                 .map(edu => (
                   <div key={edu.id} className="text-xs">
-                    {edu.degree && (
-                      <div className="font-medium text-foreground">{edu.degree}</div>
+                    {(edu.credential || edu.major) && (
+                      <div className="font-medium text-foreground">
+                        {[edu.credential, edu.major].filter(Boolean).join(' • ')}
+                      </div>
                     )}
                     {edu.school && (
                       <div className="text-muted-foreground">{edu.school}</div>
+                    )}
+                    {edu.faculty && (
+                      <div className="text-muted-foreground">{edu.faculty}</div>
+                    )}
+                    {edu.endDate && (
+                      <div className="text-muted-foreground mt-1">
+                        {edu.current ? 'Expected: ' : ''}{edu.endDate}
+                      </div>
                     )}
                   </div>
                 ))}
@@ -111,6 +142,33 @@ export const PreviewPanel = ({ data }: PreviewPanelProps) => {
                   {skill}
                 </span>
               ))}
+            </div>
+          </div>
+        )}
+
+        {data.projects && data.projects.some(p => p.name || p.organization || p.description) && (
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-2">Projects</h3>
+            <div className="space-y-3">
+              {data.projects
+                .filter(p => p.name || p.organization || p.description)
+                .map(p => (
+                  <div key={p.id} className="text-xs">
+                    {p.name && (
+                      <div className="font-medium text-foreground">{p.name}</div>
+                    )}
+                    {(p.organization || p.startDate || p.endDate || p.current) && (
+                      <div className="text-muted-foreground">
+                        {[p.organization, (p.startDate || p.endDate || p.current) ? `${p.startDate} - ${p.current ? 'Present' : p.endDate}` : '']
+                          .filter(Boolean)
+                          .join(' • ')}
+                      </div>
+                    )}
+                    {p.description && (
+                      <div className="text-muted-foreground whitespace-pre-wrap mt-1">{p.description}</div>
+                    )}
+                  </div>
+                ))}
             </div>
           </div>
         )}

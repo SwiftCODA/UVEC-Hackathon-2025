@@ -3,17 +3,17 @@ export interface ResumeData {
     name: string;
     email: string;
     phone: string;
-    location: string;
+    country: 'USA' | 'Canada' | '';
+    stateProvince: string;
+    city: string;
+    githubUrl?: string;
+    linkedinUrl?: string;
   };
   summary: string;
   experience: WorkExperience[];
   education: Education[];
   skills: string[];
-  additional: {
-    certifications: string[];
-    projects: string[];
-    achievements: string[];
-  };
+  projects: Project[];
 }
 
 export interface WorkExperience {
@@ -28,17 +28,28 @@ export interface WorkExperience {
 
 export interface Education {
   id: string;
-  degree: string;
+  credential: string; // e.g., Bachelor's, Diploma, Certificate
+  faculty: string;    // e.g., Engineering, Arts
+  major: string;      // e.g., Computer Science
   school: string;
-  startDate: string;
   endDate: string;
   current: boolean;
 }
 
+export interface Project {
+  id: string;
+  name: string;
+  organization: string; // optional display org/company/school
+  startDate: string;
+  endDate: string;
+  current: boolean;
+  link?: string;
+  description: string;
+}
+
 export type Step =
   | 'basic'
-  | 'summary'
   | 'experience'
   | 'education'
   | 'skills'
-  | 'additional';
+  | 'projects';
