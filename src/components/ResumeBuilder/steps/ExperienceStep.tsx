@@ -8,6 +8,19 @@ import { Plus, Trash2 } from 'lucide-react'
 import { MonthYearPicker } from '../MonthYearPicker'
 import { WorkExperience } from '../types'
 
+const USA_STATES = [
+    'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+    'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+    'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+    'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+    'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'DC'
+]
+
+const CANADA_PROVINCES = [
+    'AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU',
+    'ON', 'PE', 'QC', 'SK', 'YT'
+]
+
 interface ExperienceStepProps {
     data: WorkExperience[]
     onChange: (data: WorkExperience[]) => void
@@ -21,6 +34,9 @@ export const ExperienceStep = ({ data, onChange }: ExperienceStepProps) => {
                 id: crypto.randomUUID(),
                 jobTitle: '',
                 company: '',
+                country: '',
+                city: '',
+                stateProvince: '',
                 startDate: '',
                 endDate: '',
                 current: false,
@@ -111,6 +127,82 @@ export const ExperienceStep = ({ data, onChange }: ExperienceStepProps) => {
                                         )
                                     }
                                     placeholder="Tech Corp"
+                                    className="mt-1.5"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <Label htmlFor={`country-${exp.id}`}>
+                                    Country *
+                                </Label>
+                                <select
+                                    id={`country-${exp.id}`}
+                                    className="mt-1.5 w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                    value={exp.country}
+                                    onChange={(e) => {
+                                        const country = e.target.value as 'USA' | 'Canada' | '';
+                                        // Reset state/province when country changes
+                                        onChange(
+                                            data.map((experience) =>
+                                                experience.id === exp.id
+                                                    ? { ...experience, country, stateProvince: '' }
+                                                    : experience
+                                            )
+                                        );
+                                    }}
+                                >
+                                    <option value="">Select Country</option>
+                                    <option value="USA">USA</option>
+                                    <option value="Canada">Canada</option>
+                                </select>
+                            </div>
+                            <div>
+                                <Label htmlFor={`stateProvince-${exp.id}`}>
+                                    {exp.country === 'Canada' ? 'Province/Territory' : 'State'} *
+                                </Label>
+                                <select
+                                    id={`stateProvince-${exp.id}`}
+                                    className="mt-1.5 w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50"
+                                    value={exp.stateProvince}
+                                    onChange={(e) =>
+                                        updateExperience(
+                                            exp.id,
+                                            'stateProvince',
+                                            e.target.value
+                                        )
+                                    }
+                                    disabled={!exp.country}
+                                >
+                                    <option value="">
+                                        {exp.country ? 'Select one' : 'Select country first'}
+                                    </option>
+                                    {(exp.country === 'Canada' ? CANADA_PROVINCES : USA_STATES).map((code) => (
+                                        <option key={code} value={code}>
+                                            {code}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <Label htmlFor={`city-${exp.id}`}>
+                                    City *
+                                </Label>
+                                <Input
+                                    id={`city-${exp.id}`}
+                                    value={exp.city}
+                                    onChange={(e) =>
+                                        updateExperience(
+                                            exp.id,
+                                            'city',
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="San Francisco"
                                     className="mt-1.5"
                                 />
                             </div>

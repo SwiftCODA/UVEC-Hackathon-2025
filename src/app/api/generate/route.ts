@@ -42,8 +42,9 @@ export async function POST(request: Request) {
         startDate: x.startDate || "",
         endDate: x.current ? undefined : x.endDate || undefined,
         accomplishments: x.responsibilities || "",
-        city,
-        stateProvinceAbbreviation,
+        country: x.country || "",
+        city: x.city || "",
+        stateProvinceAbbreviation: x.stateProvince || "",
       }))
     : undefined;
 

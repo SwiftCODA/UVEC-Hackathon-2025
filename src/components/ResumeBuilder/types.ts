@@ -20,6 +20,9 @@ export interface WorkExperience {
   id: string;
   jobTitle: string;
   company: string;
+  country: 'USA' | 'Canada' | '';
+  city: string;
+  stateProvince: string;
   startDate: string;
   endDate: string;
   current: boolean;
