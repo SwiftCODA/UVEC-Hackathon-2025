@@ -190,6 +190,26 @@ const RESUME_TEMPLATE = `
   \\resumeSubHeadingListEnd
 {% endif %}
 
+{% if skills and (skills.languages.length > 0 or skills.frameworks.length > 0 or skills.libraries.length > 0) %}
+\\section{Technical Skills}
+ \\begin{itemize}[leftmargin=0.15in, label={}]
+    \\small{\\item{
+{% set hasLanguages = skills.languages and skills.languages.length > 0 %}
+{% set hasFrameworks = skills.frameworks and skills.frameworks.length > 0 %}
+{% set hasLibraries = skills.libraries and skills.libraries.length > 0 %}
+{% if hasLanguages %}
+     \\textbf{Languages}{: {{ skills.languages.join(', ') | latex }}}{% if hasFrameworks or hasLibraries %} \\\\{% endif %}
+{% endif %}
+{% if hasFrameworks %}
+     \\textbf{Frameworks}{: {{ skills.frameworks.join(', ') | latex }}}{% if hasLibraries %} \\\\{% endif %}
+{% endif %}
+{% if hasLibraries %}
+     \\textbf{Libraries}{: {{ skills.libraries.join(', ') | latex }}}
+{% endif %}
+    }}
+ \\end{itemize}
+{% endif %}
+
 \\end{document}`.trim()
 
 export const generateLaTeX = (jsonData: object): string => {

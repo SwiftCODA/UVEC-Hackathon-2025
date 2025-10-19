@@ -84,26 +84,41 @@ export const ResumeBuilder = () => {
                 break
             // summary removed
             case 'experience': {
-                if (resumeData.experience.length === 0) break;
+                if (resumeData.experience.length === 0) break
                 const allValid = resumeData.experience.every(
-                    exp => exp.jobTitle && exp.company && exp.country && exp.city && exp.stateProvince && exp.startDate
-                );
+                    (exp) =>
+                        exp.jobTitle &&
+                        exp.company &&
+                        exp.country &&
+                        exp.city &&
+                        exp.stateProvince &&
+                        exp.startDate
+                )
                 if (!allValid) {
-                    toast.error('Please fill in job title, company, country, location, and start date for all experience entries or delete incomplete ones.');
-                    return false;
+                    toast.error(
+                        'Please fill in job title, company, country, location, and start date for all experience entries or delete incomplete ones.'
+                    )
+                    return false
                 }
-                break;
+                break
             }
             case 'education': {
-                if (resumeData.education.length === 0) break;
+                if (resumeData.education.length === 0) break
                 const allValid = resumeData.education.every(
-                    edu => edu.credential && edu.faculty && edu.major && edu.school && !!edu.endDate
-                );
+                    (edu) =>
+                        edu.credential &&
+                        edu.faculty &&
+                        edu.major &&
+                        edu.school &&
+                        !!edu.endDate
+                )
                 if (!allValid) {
-                    toast.error('Please fill in credential, faculty, major, school, and graduation date for all education entries or delete incomplete ones.');
-                    return false;
+                    toast.error(
+                        'Please fill in credential, faculty, major, school, and graduation date for all education entries or delete incomplete ones.'
+                    )
+                    return false
                 }
-                break;
+                break
             }
             case 'skills':
                 if (resumeData.skills.length === 0) {
@@ -112,15 +127,17 @@ export const ResumeBuilder = () => {
                 }
                 break
             case 'projects': {
-                if (resumeData.projects.length === 0) break;
+                if (resumeData.projects.length === 0) break
                 const allValid = resumeData.projects.every(
-                    p => p.name && p.startDate
-                );
+                    (p) => p.name && p.startDate
+                )
                 if (!allValid) {
-                    toast.error('Please fill in name and start date for all project entries or delete incomplete ones.');
-                    return false;
+                    toast.error(
+                        'Please fill in name and start date for all project entries or delete incomplete ones.'
+                    )
+                    return false
                 }
-                break;
+                break
             }
         }
         return true
@@ -149,26 +166,50 @@ export const ResumeBuilder = () => {
 
         toast.loading('Generating your resume...')
         try {
-            const response = await fetch('/api/generate', {
+            const response = await fetch('/api/makeResume', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(resumeData)
             })
-            const result = await response.json()
+
+            if (!response.ok) {
+                throw new Error('Failed to generate resume')
+            }
+
+            // Get the PDF blob from the response
+            const blob = await response.blob()
+
+            // Extract filename from Content-Disposition header
+            const contentDisposition = response.headers.get(
+                'Content-Disposition'
+            )
+
+            let filename = 'resume.pdf' // fallback
+            if (contentDisposition) {
+                // Match both filename="..." and filename=...
+                const filenameMatch = contentDisposition.match(
+                    /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+                )
+                if (filenameMatch && filenameMatch[1]) {
+                    filename = filenameMatch[1].replace(/['"]/g, '')
+                }
+            }
+
+            console.log('Content-Disposition:', contentDisposition)
+            console.log('Extracted filename:', filename)
+
             toast.dismiss()
-            toast.success('Resume JSON ready!', {
-                description: 'Your resume data was exported as JSON.'
+            toast.success('Resume generated!', {
+                description: 'Your resume PDF is ready to download.'
             })
-            // Download the JSON file
-            const blob = new Blob([JSON.stringify(result.resume, null, 2)], {
-                type: 'application/json'
-            })
+
+            // Download the PDF file
             const url = URL.createObjectURL(blob)
             const a = document.createElement('a')
             a.href = url
-            a.download = 'resume.json'
+            a.download = filename
             document.body.appendChild(a)
             a.click()
             a.remove()
@@ -235,7 +276,7 @@ export const ResumeBuilder = () => {
             <div className="container mx-auto px-4 py-8 max-w-7xl">
                 <div className="mb-8 text-center">
                     <h1 className="text-4xl font-bold text-foreground mb-3">
-                        NEXT Resume
+                        NextResume
                     </h1>
                     <p className="text-muted-foreground">
                         Create a professional resume in minutes

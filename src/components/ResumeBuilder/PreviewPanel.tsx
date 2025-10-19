@@ -62,10 +62,10 @@ export const PreviewPanel = ({ data }: PreviewPanelProps) => {
                                     </span>
                                 </div>
                             )}
-                            {data.basicInfo.githubUrl && (
+                            {data.basicInfo.githubUsername && (
                                 <a
                                     className="flex items-center gap-2 hover:underline"
-                                    href={data.basicInfo.githubUrl}
+                                    href={data.basicInfo.githubUsername}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
@@ -197,21 +197,14 @@ export const PreviewPanel = ({ data }: PreviewPanelProps) => {
                 )}
 
                 {data.projects &&
-                    data.projects.some(
-                        (p) => p.name || p.organization || p.description
-                    ) && (
+                    data.projects.some((p) => p.name || p.description) && (
                         <div>
                             <h3 className="text-sm font-semibold text-foreground mb-2">
                                 Projects
                             </h3>
                             <div className="space-y-3">
                                 {data.projects
-                                    .filter(
-                                        (p) =>
-                                            p.name ||
-                                            p.organization ||
-                                            p.description
-                                    )
+                                    .filter((p) => p.name || p.description)
                                     .map((p) => (
                                         <div key={p.id} className="text-xs">
                                             {p.name && (
@@ -219,13 +212,11 @@ export const PreviewPanel = ({ data }: PreviewPanelProps) => {
                                                     {p.name}
                                                 </div>
                                             )}
-                                            {(p.organization ||
-                                                p.startDate ||
+                                            {(p.startDate ||
                                                 p.endDate ||
                                                 p.current) && (
                                                 <div className="text-muted-foreground">
                                                     {[
-                                                        p.organization,
                                                         p.startDate ||
                                                         p.endDate ||
                                                         p.current

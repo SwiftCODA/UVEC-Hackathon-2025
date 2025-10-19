@@ -6,49 +6,62 @@ type Location = {
 export namespace OpenAIPrompts {
     export const buildInputPrompt = (
         input: {
-            firstName: string
-            lastName: string
-            city: string
-            stateProvinceAbbreviation: string
-            githubUsername?: string
-            linkedinUrl?: string
-            phoneNumber?: string
-            emailAddress: string
+            basicInfo: {
+                name: string
+                city: string
+                stateProvince: string
+                githubUsername?: string
+                linkedinUrl?: string
+                phone?: string
+                email: string
+            }
             education?: ({
                 credential: string
                 faculty: string
                 major: string
-                institution: string
-                graduationDate?: string
+                school: string
+                endDate?: string
             } & Location)[]
             experience?: ({
                 jobTitle: string
-                companyName: string
+                company: string
                 startDate: string
                 endDate?: string
-                accomplishments: string
+                responsibilities: string
             } & Location)[]
             projects?: {
-                title: string
+                name: string
                 startDate: string
                 endDate?: string
-                accomplishments: string
+                description: string
             }[]
             skills?: string[]
         } & Location
     ) => `
-My name is ${input.firstName} ${input.lastName}, and I am located in ${
-        input.city
-    }, ${input.stateProvinceAbbreviation}.
+My name is ${input.basicInfo.name}, and I am located in ${input.city}, ${
+        input.stateProvinceAbbreviation
+    }.
 ${
-    !!input.githubUsername
-        ? `My GitHub URL is https://github.com/${input.githubUsername}.`
+    !!input.basicInfo.githubUsername
+        ? `My GitHub URL is https://github.com/${input.basicInfo.githubUsername}.`
         : ''
 }
 
-${!!input.phoneNumber ? 'My phone number is ' + input.phoneNumber + '.' : ''}
-${!!input.linkedinUrl ? 'My LinkedIn URL is ' + input.linkedinUrl + '.' : ''}
-${!!input.emailAddress ? 'My email address is ' + input.emailAddress + '.' : ''}
+${
+    !!input.basicInfo.phone
+        ? 'My phone number is ' + input.basicInfo.phone + '.'
+        : ''
+}
+${
+    !!input.basicInfo.linkedinUrl
+        ? 'My LinkedIn URL is ' + input.basicInfo.linkedinUrl + '.'
+        : ''
+}
+${
+    !!input.basicInfo.email
+        ? 'My email address is ' + input.basicInfo.email + '.'
+        : ''
+}
 
 ${
     !!input.education && input.education.length > 0
