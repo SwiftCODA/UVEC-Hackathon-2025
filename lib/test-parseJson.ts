@@ -4,33 +4,46 @@ import { ResumeGenerator } from './parseJson'
 const sampleData = {
     first_name: 'Liam',
     last_name: 'Sebestyen',
-    city: 'Victoria',
+    city: 'Vancouver',
     state_province_abbreviation: 'BC',
-    email: 'liam@uvic.ca',
-    phone_number: '',
+    email: 'liam@gmail.com',
+    phone_number: '123-456-7890',
     github_url: 'https://github.com/liamsebestyen',
     linkedin_url: 'https://www.linkedin.com/in/liamsebestyen/',
 
-    // ⬇️ Education matches your EducationSchema
     education: [
         {
-            degree: 'Bachelor of Engineering, Software Engineering',
-            institution: 'University of Victoria',
+            credential: 'B.Eng in Software Engineering',
+            university_college_name: 'University of Victoria',
             location: 'Victoria, BC',
-            graduation_date: '2025-04-30', // ISO-ish string; change to whatever format you prefer
-            gpa: '3.7/4.0'
+            graduation_date: '2026-01-01'
         },
         {
-            degree: 'High School Diploma',
-            institution: 'Oak Bay High School',
+            credential: 'High School Diploma',
+            university_college_name: 'Oak Bay High School',
             location: 'Victoria, BC',
-            graduation_date: '2021-06-30',
-            gpa: '4.0/4.0'
+            graduation_date: '2021-06-30'
         }
     ],
 
-    // ⬇️ Experience already matches your ExperienceSchema
     experience: [
+        {
+            job_title: 'Full-Stack Developer',
+            company_name: 'Tech Solutions Inc.',
+            location: 'Vancouver, BC',
+            start_date: '2022-06-01',
+            end_date: '2023-08-31',
+            accomplishments: [
+                'Developed a hotspot system used by cal fire to improve response times',
+                'Created a 3d clustering tool for ir data enabling quicker hotspot identification',
+                'Redesigned perimeter mapping tool to visualize distances between hotspots for better planning',
+                'Built a colorfinder React/TypeScript tool to aid search and rescue operations',
+                'Designed a panorama viewer for fire sites to visualize 3d views over large areas',
+                'Automated deployment pipelines with Docker AWS Nginx to streamline updates',
+                'Collaborated with designers to optimize UI and performance for tens of thousands of users',
+                'Engaged with fire teams and engineers to identify and develop essential tools'
+            ]
+        },
         {
             job_title: 'Software Engineer',
             company_name: 'Cal Fire',
@@ -61,11 +74,25 @@ const sampleData = {
                 'Optimized REST API endpoints used by millions of iCloud devices through caching and load balancing strategies',
                 'Contributed to CI/CD improvements in Jenkins and GitHub Actions for multi-region deployments'
             ]
+        }
+    ],
+
+    projects: [
+        {
+            project_name: 'Aperture AI',
+            start_date: '2025-07-01',
+            end_date: '2025-12-31',
+            accomplishments: [
+                'Founded Aperture AI as an AI photo assistant that creates Lightroom presets from prompts',
+                'Led the technology team and managed 3 developers',
+                'Implemented backend on AWS with Lambda S3 socket IO for real-time uploads',
+                'Integrated OpenAI moderation for automatic image deletion of flagged content',
+                'Fine-tuned GPT-4 mini for style and camera info recognition from photos',
+                'Developed a freemium model with rate limits and live preset generation using embeddings and keyword matching'
+            ]
         },
         {
-            job_title: 'Full Stack Developer',
-            company_name: 'Varsity Vantage',
-            location: 'Victoria, BC',
+            project_name: 'Varsity Vantage',
             start_date: '2023-01-01',
             end_date: '2023-12-31',
             accomplishments: [
