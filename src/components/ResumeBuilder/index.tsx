@@ -80,28 +80,28 @@ export const ResumeBuilder = () => {
                 }
                 break
             // summary removed
-            case 'experience':
-                const hasValidExperience = resumeData.experience.some(
-                    (exp) => exp.jobTitle && exp.company && exp.startDate
-                )
-                if (!hasValidExperience) {
-                    toast.error(
-                        'Please add at least one work experience with job title, company, and start date'
-                    )
-                    return false
+            case 'experience': {
+                if (resumeData.experience.length === 0) break;
+                const allValid = resumeData.experience.every(
+                    exp => exp.jobTitle && exp.company && exp.startDate
+                );
+                if (!allValid) {
+                    toast.error('Please fill in job title, company, and start date for all experience entries or delete incomplete ones.');
+                    return false;
                 }
-                break
-            case 'education':
-                const hasValidEducation = resumeData.education.some(
-                    (edu) => edu.credential && edu.school && !!edu.endDate
-                )
-                if (!hasValidEducation) {
-                    toast.error(
-                        'Please add at least one education entry with credential, school, and graduation date'
-                    )
-                    return false
+                break;
+            }
+            case 'education': {
+                if (resumeData.education.length === 0) break;
+                const allValid = resumeData.education.every(
+                    edu => edu.credential && edu.school && !!edu.endDate
+                );
+                if (!allValid) {
+                    toast.error('Please fill in credential, school, and graduation date for all education entries or delete incomplete ones.');
+                    return false;
                 }
-                break
+                break;
+            }
             case 'skills':
                 if (resumeData.skills.length === 0) {
                     toast.error('Please add at least one skill')
