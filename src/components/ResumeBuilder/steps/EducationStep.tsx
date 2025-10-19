@@ -99,14 +99,15 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
               </div>
 
               <div>
-                <Label htmlFor={`endDate-${edu.id}`}>End Date</Label>
+                <Label htmlFor={`endDate-${edu.id}`}>
+                  {edu.current ? "Expected Graduation Date" : "End Date"}
+                </Label>
                 <Input
                   id={`endDate-${edu.id}`}
                   type="month"
                   value={edu.endDate}
                   onChange={(e) => updateEducation(edu.id, 'endDate', e.target.value)}
                   className="mt-1.5"
-                  disabled={edu.current}
                 />
               </div>
             </div>

@@ -121,24 +121,29 @@ export const ResumeBuilder = () => {
     if (!validateStep()) return;
 
     toast.loading('Generating your resume...');
-    
     try {
-      await fetch('/api/generate', {
+      const response = await fetch('/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(resumeData),
-      }).catch(() => {
-        return new Promise(resolve => setTimeout(() => resolve({ ok: true }), 1500));
       });
-
+      const result = await response.json();
       toast.dismiss();
-      toast.success('Resume generated successfully!', {
-        description: 'Your AI-powered resume is ready for download.',
+      toast.success('Resume JSON ready!', {
+        description: 'Your resume data was exported as JSON.',
       });
-      
-      console.log('Resume data:', resumeData);
+      // Download the JSON file
+      const blob = new Blob([JSON.stringify(result.resume, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'resume.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
     } catch {
       toast.dismiss();
       toast.error('Failed to generate resume. Please try again.');
