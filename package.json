@@ -5,8 +5,16 @@
     "scripts": {
         "dev": "next dev --turbopack",
         "build": "next build --turbopack",
+        "build:docker": "next build --turbopack",
         "start": "next start",
-        "lint": "eslint"
+        "lint": "eslint",
+        "docker:build": "docker-compose build",
+        "docker:up": "docker-compose up",
+        "docker:up:build": "docker-compose up --build",
+        "docker:down": "docker-compose down",
+        "docker:logs": "docker-compose logs -f",
+        "docker:restart": "docker-compose restart",
+        "docker:clean": "docker-compose down -v --rmi all"
     },
     "contributors": [
         {
