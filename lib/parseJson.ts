@@ -205,6 +205,10 @@ export class ResumeGenerator {
         return env.renderString(RESUME_TEMPLATE, this.data)
     }
 
+    generatePDF(): void {
+        // Placeholder for PDF generation logic
+    }
+
     // Save to .tex file (optional)
     async saveToFile(filepath: string): Promise<void> {
         const latex = this.generateLaTeX()
