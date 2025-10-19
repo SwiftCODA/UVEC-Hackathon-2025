@@ -111,22 +111,22 @@ const sampleData = {
     try {
         console.log('🧪 Testing ResumeGenerator...\n')
 
-        // Create generator
         const generator = new ResumeGenerator(sampleData)
         console.log('✅ JSON validation passed!\n')
 
         // Generate LaTeX
         const latex = generator.generateLaTeX()
         console.log('✅ LaTeX generated successfully!\n')
-        console.log('📄 Generated LaTeX:')
-        console.log('─'.repeat(50))
-        console.log(latex)
-        console.log('─'.repeat(50))
 
-        // Save to file
+        // Save .tex file
         await generator.saveToFile('./resume-output.tex')
-        console.log('\n✅ Saved to resume-output.tex')
-        console.log('\n🎉 All tests passed!')
+        console.log('✅ Saved to resume-output.tex\n')
+
+        // Generate PDF
+        const pdfPath = await generator.generatePDF('./resume-output.pdf')
+        console.log(`✅ PDF generated: ${pdfPath}\n`)
+
+        console.log('🎉 All tests passed!')
     } catch (error) {
         console.error('❌ Test failed:', error)
         process.exit(1)
