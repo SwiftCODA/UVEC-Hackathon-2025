@@ -205,8 +205,54 @@ export class ResumeGenerator {
         return env.renderString(RESUME_TEMPLATE, this.data)
     }
 
-    generatePDF(): void {
-        // Placeholder for PDF generation logic
+    // Generate PDF using local pdflatex
+    async generatePDF(outputPath: string = './resume.pdf'): Promise<string> {
+        const { execSync } = await import('child_process')
+        const fs = await import('fs/promises')
+        const path = await import('path')
+        const os = await import('os')
+
+        // Use full path if pdflatex not in PATH
+        const pdflatexCmd = '/Library/TeX/texbin/pdflatex'
+
+        // Create temp directory for LaTeX compilation
+        const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'resume-'))
+        const texFile = path.join(tempDir, 'resume.tex')
+        const pdfFile = path.join(tempDir, 'resume.pdf')
+
+        try {
+            // Write LaTeX to temp file
+            const latex = this.generateLaTeX()
+            await fs.writeFile(texFile, latex, 'utf-8')
+
+            // Run pdflatex with full path
+            execSync(
+                `${pdflatexCmd} -interaction=nonstopmode -output-directory="${tempDir}" "${texFile}"`,
+                {
+                    stdio: 'pipe'
+                }
+            )
+            execSync(
+                `${pdflatexCmd} -interaction=nonstopmode -output-directory="${tempDir}" "${texFile}"`,
+                {
+                    stdio: 'pipe'
+                }
+            )
+
+            // Move PDF to desired output location
+            await fs.copyFile(pdfFile, outputPath)
+
+            // Cleanup temp directory
+            await fs.rm(tempDir, { recursive: true, force: true })
+
+            return outputPath
+        } catch (error) {
+            // Cleanup on error
+            await fs
+                .rm(tempDir, { recursive: true, force: true })
+                .catch(() => {})
+            throw new Error(`PDF generation failed: ${error}`)
+        }
     }
 
     // Save to .tex file (optional)
