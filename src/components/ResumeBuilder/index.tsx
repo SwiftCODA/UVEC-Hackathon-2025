@@ -77,33 +77,65 @@ export const ResumeBuilder = () => {
     const validateStep = (): boolean => {
         switch (currentStep) {
             case 'basic':
-                if (!resumeData.basicInfo.name || !resumeData.basicInfo.email) {
+                const { name, email, phone, country, stateProvince, city } =
+                    resumeData.basicInfo
+
+                // Check all required fields are filled
+                if (
+                    !name ||
+                    !email ||
+                    !phone ||
+                    !country ||
+                    !stateProvince ||
+                    !city
+                ) {
                     toast.error('Please fill in all required information')
+                    return false
+                }
+
+                // Check phone is longer than 2 characters (more than just "+1")
+                if (phone.length <= 2) {
+                    toast.error('Please enter a valid phone number')
                     return false
                 }
                 break
             // summary removed
             case 'experience': {
-                if (resumeData.experience.length === 0) break;
+                if (resumeData.experience.length === 0) break
                 const allValid = resumeData.experience.every(
-                    exp => exp.jobTitle && exp.company && exp.country && exp.city && exp.stateProvince && exp.startDate
-                );
+                    (exp) =>
+                        exp.jobTitle &&
+                        exp.company &&
+                        exp.country &&
+                        exp.city &&
+                        exp.stateProvince &&
+                        exp.startDate
+                )
                 if (!allValid) {
-                    toast.error('Please fill in job title, company, country, location, and start date for all experience entries or delete incomplete ones.');
-                    return false;
+                    toast.error(
+                        'Please fill in job title, company, country, location, and start date for all experience entries or delete incomplete ones.'
+                    )
+                    return false
                 }
-                break;
+                break
             }
             case 'education': {
-                if (resumeData.education.length === 0) break;
+                if (resumeData.education.length === 0) break
                 const allValid = resumeData.education.every(
-                    edu => edu.credential && edu.faculty && edu.major && edu.school && !!edu.endDate
-                );
+                    (edu) =>
+                        edu.credential &&
+                        edu.faculty &&
+                        edu.major &&
+                        edu.school &&
+                        !!edu.endDate
+                )
                 if (!allValid) {
-                    toast.error('Please fill in credential, faculty, major, school, and graduation date for all education entries or delete incomplete ones.');
-                    return false;
+                    toast.error(
+                        'Please fill in credential, faculty, major, school, and graduation date for all education entries or delete incomplete ones.'
+                    )
+                    return false
                 }
-                break;
+                break
             }
             case 'skills':
                 if (resumeData.skills.length === 0) {
@@ -112,15 +144,17 @@ export const ResumeBuilder = () => {
                 }
                 break
             case 'projects': {
-                if (resumeData.projects.length === 0) break;
+                if (resumeData.projects.length === 0) break
                 const allValid = resumeData.projects.every(
-                    p => p.name && p.startDate
-                );
+                    (p) => p.name && p.startDate
+                )
                 if (!allValid) {
-                    toast.error('Please fill in name and start date for all project entries or delete incomplete ones.');
-                    return false;
+                    toast.error(
+                        'Please fill in name and start date for all project entries or delete incomplete ones.'
+                    )
+                    return false
                 }
-                break;
+                break
             }
         }
         return true
