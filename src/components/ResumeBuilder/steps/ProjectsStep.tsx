@@ -48,16 +48,14 @@ export const ProjectsStep = ({ data, onChange }: ProjectsStepProps) => {
           <div key={p.id} className="p-6 bg-secondary/30 rounded-xl space-y-4 relative">
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-medium text-foreground">Project {index + 1}</h3>
-              {data.length > 1 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeProject(p.id)}
-                  className="text-destructive hover:text-destructive"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => removeProject(p.id)}
+                className="text-destructive hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>

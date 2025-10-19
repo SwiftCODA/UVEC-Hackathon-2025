@@ -108,17 +108,17 @@ export const ResumeBuilder = () => {
                     return false
                 }
                 break
-            case 'projects':
-                const hasValidProject = resumeData.projects.some(
-                    (p) => p.name && p.startDate
-                )
-                if (!hasValidProject) {
-                    toast.error(
-                        'Please add at least one project with name and start date'
-                    )
-                    return false
+            case 'projects': {
+                if (resumeData.projects.length === 0) break;
+                const allValid = resumeData.projects.every(
+                    p => p.name && p.startDate
+                );
+                if (!allValid) {
+                    toast.error('Please fill in name and start date for all project entries or delete incomplete ones.');
+                    return false;
                 }
-                break
+                break;
+            }
         }
         return true
     }
