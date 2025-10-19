@@ -20,20 +20,17 @@ export const ProjectsStep = ({ data, onChange }: ProjectsStepProps) => {
       {
         id: crypto.randomUUID(),
         name: '',
-        organization: '',
         startDate: '',
         endDate: '',
         current: false,
         link: '',
-        description: '',
-      },
+        description: ''
+      }
     ]);
   };
-
   const removeProject = (id: string) => {
     onChange(data.filter(p => p.id !== id));
   };
-
   const updateProject = (id: string, field: keyof Project, value: string | boolean) => {
     onChange(
       data.map(p => (p.id === id ? { ...p, [field]: value } : p))
@@ -46,24 +43,20 @@ export const ProjectsStep = ({ data, onChange }: ProjectsStepProps) => {
         <h2 className="text-2xl font-semibold text-foreground mb-2">Projects</h2>
         <p className="text-muted-foreground">Showcase your relevant projects</p>
       </div>
-
       <div className="space-y-6">
         {data.map((p, index) => (
           <div key={p.id} className="p-6 bg-secondary/30 rounded-xl space-y-4 relative">
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-medium text-foreground">Project {index + 1}</h3>
-              {data.length > 1 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeProject(p.id)}
-                  className="text-destructive hover:text-destructive"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => removeProject(p.id)}
+                className="text-destructive hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor={`name-${p.id}`}>Project Name *</Label>
@@ -75,18 +68,18 @@ export const ProjectsStep = ({ data, onChange }: ProjectsStepProps) => {
                   className="mt-1.5"
                 />
               </div>
-              <div>
-                <Label htmlFor={`org-${p.id}`}>Organization</Label>
-                <Input
-                  id={`org-${p.id}`}
-                  value={p.organization}
-                  onChange={(e) => updateProject(p.id, 'organization', e.target.value)}
-                  placeholder="University / Company / Personal"
-                  className="mt-1.5"
-                />
-              </div>
             </div>
-
+            <div>
+              <Label htmlFor={`link-${p.id}`}>Link</Label>
+              <Input
+                id={`link-${p.id}`}
+                type="url"
+                value={p.link || ''}
+                onChange={(e) => updateProject(p.id, 'link', e.target.value)}
+                placeholder="https://github.com/your/repo or project site"
+                className="mt-1.5"
+              />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <MonthYearPicker
@@ -103,7 +96,6 @@ export const ProjectsStep = ({ data, onChange }: ProjectsStepProps) => {
                 />
               </div>
             </div>
-
             <div className="flex items-center space-x-2">
               <Checkbox
                 id={`current-${p.id}`}
@@ -114,25 +106,6 @@ export const ProjectsStep = ({ data, onChange }: ProjectsStepProps) => {
                 I am currently working on this
               </Label>
             </div>
-
-            <div>
-              <Label htmlFor={`link-${p.id}`}>Link</Label>
-              <div className="flex gap-2 mt-1.5">
-                <Input
-                  id={`link-${p.id}`}
-                  type="url"
-                  value={p.link || ''}
-                  onChange={(e) => updateProject(p.id, 'link', e.target.value)}
-                  placeholder="https://github.com/your/repo or project site"
-                />
-                <Button type="button" variant="outline" asChild>
-                  <a href={p.link || '#'} target="_blank" rel="noopener noreferrer" aria-disabled={!p.link}>
-                    <LinkIcon className="h-4 w-4" />
-                  </a>
-                </Button>
-              </div>
-            </div>
-
             <div>
               <Label htmlFor={`desc-${p.id}`}>Description</Label>
               <Textarea
@@ -145,7 +118,6 @@ export const ProjectsStep = ({ data, onChange }: ProjectsStepProps) => {
             </div>
           </div>
         ))}
-
         <Button onClick={addProject} variant="outline" className="w-full">
           <Plus className="h-4 w-4 mr-2" />
           Add Another Project

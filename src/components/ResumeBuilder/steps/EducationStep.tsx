@@ -102,16 +102,14 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
           <div key={edu.id} className="p-6 bg-secondary/30 rounded-xl space-y-4 relative">
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-medium text-foreground">Education {index + 1}</h3>
-              {data.length > 1 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeEducation(edu.id)}
-                  className="text-destructive hover:text-destructive"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => removeEducation(edu.id)}
+                className="text-destructive hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -161,7 +159,7 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor={`faculty-${edu.id}`}>Faculty</Label>
+                <Label htmlFor={`faculty-${edu.id}`}>Faculty *</Label>
                 <select
                   id={`faculty-${edu.id}`}
                   className="mt-1.5 w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -192,7 +190,7 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
                 )}
               </div>
               <div>
-                <Label htmlFor={`major-${edu.id}`}>Major</Label>
+                <Label htmlFor={`major-${edu.id}`}>Major *</Label>
                 <select
                   id={`major-${edu.id}`}
                   className="mt-1.5 w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -229,7 +227,7 @@ export const EducationStep = ({ data, onChange }: EducationStepProps) => {
                 <MonthYearPicker
                   value={edu.endDate}
                   onChange={(val: string) => updateEducation(edu.id, 'endDate', val)}
-                  label={edu.current ? "Expected Graduation Date" : "Graduation Date"}
+                  label={edu.current ? "Expected Graduation Date *" : "Graduation Date *"}
                 />
               </div>
             </div>

@@ -6,7 +6,7 @@ export interface ResumeData {
     country: 'USA' | 'Canada' | '';
     stateProvince: string;
     city: string;
-    githubUrl?: string;
+  githubUsername?: string;
     linkedinUrl?: string;
   };
   summary: string;
@@ -39,7 +39,6 @@ export interface Education {
 export interface Project {
   id: string;
   name: string;
-  organization: string; // optional display org/company/school
   startDate: string;
   endDate: string;
   current: boolean;
