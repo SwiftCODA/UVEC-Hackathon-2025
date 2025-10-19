@@ -7,16 +7,22 @@ const ExperienceSchema = z.object({
     company_name: z.string().default(''),
     location: z.string().default(''),
     start_date: z.string().default(''),
-    end_date: z.string().default(''), // Changed from optional to default
+    end_date: z.string().default(''),
     accomplishments: z.array(z.string()).default([])
 })
 
 const EducationSchema = z.object({
-    degree: z.string().default(''),
-    institution: z.string().default(''),
+    credential: z.string().default(''),
+    university_college_name: z.string().default(''),
     location: z.string().default(''),
-    graduation_date: z.string().default(''),
-    gpa: z.string().default('') // Changed from optional to default
+    graduation_date: z.string().default('')
+})
+
+const ProjectSchema = z.object({
+    project_name: z.string().default(''),
+    start_date: z.string().default(''),
+    end_date: z.string().default(''),
+    accomplishments: z.array(z.string()).default([])
 })
 
 const ResumeDataSchema = z.object({
@@ -24,12 +30,13 @@ const ResumeDataSchema = z.object({
     last_name: z.string(),
     city: z.string().default(''),
     state_province_abbreviation: z.string().default(''),
-    email: z.string().default(''), // Removed .email() validation
+    email: z.string().default(''),
     phone_number: z.string().default(''),
     github_url: z.string().default(''),
     linkedin_url: z.string().default(''),
     education: z.array(EducationSchema).default([]),
-    experience: z.array(ExperienceSchema).default([])
+    experience: z.array(ExperienceSchema).default([]),
+    projects: z.array(ProjectSchema).default([])
 })
 
 type ResumeData = z.infer<typeof ResumeDataSchema>
@@ -146,8 +153,8 @@ const RESUME_TEMPLATE = `
   \\resumeSubHeadingListStart
 {% for edu in education %}
     \\resumeSubheading
-      { {{ edu.institution | latex }} }{ {{ edu.location | latex }} }
-      { {{ edu.degree | latex }} }{ {{ edu.graduation_date | formatDate }} }
+      { {{ edu.university_college_name | latex }} }{ {{ edu.location | latex }} }
+      { {{ edu.credential | latex }} }{% if edu.expected_graduation_date %}{ Expected {{ edu.expected_graduation_date | formatDate }} }{% else %}{ {{ edu.graduation_date | formatDate }} }{% endif %}
 {% endfor %}
   \\resumeSubHeadingListEnd
 {% endif %}
@@ -161,6 +168,21 @@ const RESUME_TEMPLATE = `
       { {{ exp.company_name | latex }} }{ {{ exp.location | latex }} }
       {% if exp.accomplishments.length > 0 %}\\resumeItemListStart
 {% for acc in exp.accomplishments %}
+        \\resumeItem{ {{ acc | latex }} }
+{% endfor %}
+      \\resumeItemListEnd{% endif %}
+{% endfor %}
+  \\resumeSubHeadingListEnd
+{% endif %}
+
+{% if projects.length > 0 %}
+\\section{Projects}
+  \\resumeSubHeadingListStart
+{% for proj in projects %}
+    \\resumeProjectHeading
+      {\\textbf{ {{ proj.project_name | latex }} }}{ {{ proj.start_date | formatDate }} -- {{ proj.end_date | formatDate }} }
+      {% if proj.accomplishments.length > 0 %}\\resumeItemListStart
+{% for acc in proj.accomplishments %}
         \\resumeItem{ {{ acc | latex }} }
 {% endfor %}
       \\resumeItemListEnd{% endif %}
