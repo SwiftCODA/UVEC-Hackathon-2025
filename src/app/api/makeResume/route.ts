@@ -1,6 +1,8 @@
+import { latexToPdf } from '@/lib/latex-to-pdf'
 import { OpenAIPrompts } from '@/lib/openai'
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { generateLaTeX } from '../../../lib/json-to-latex'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -74,12 +76,20 @@ export const POST = async (req: NextRequest) => {
         if (content.type !== 'output_text')
             throw 'Unexpected content type from OpenAI'
         const payload = JSON.parse(content.text)
+        // TODO: Use payload to generate LaTeX instead of sample
 
-        // TODO: Make LaTeX doc from payload
+        const latex = generateLaTeX(payload)
+        // Generate PDF from sample LaTeX
+        const pdfBuffer = latexToPdf(latex)
 
-        // TODO: NextResponse send the PDF file.
-
-        return NextResponse.json(payload, { status: 200 })
+        // Return PDF file as response
+        return new NextResponse(pdfBuffer as unknown as BodyInit, {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': 'attachment; filename="resume.pdf"'
+            }
+        })
     } catch (error) {
         console.error('Error in /api/makeResume:', error)
         return NextResponse.json(

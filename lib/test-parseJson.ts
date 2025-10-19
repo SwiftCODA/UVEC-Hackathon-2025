@@ -1,5 +1,3 @@
-import { ResumeGenerator } from './parseJson'
-
 // Your sample JSON
 const sampleData = {
     first_name: 'Liam',
@@ -105,30 +103,3 @@ const sampleData = {
         }
     ]
 }
-
-// Test the generator - wrapped in async function
-;(async () => {
-    try {
-        console.log('🧪 Testing ResumeGenerator...\n')
-
-        const generator = new ResumeGenerator(sampleData)
-        console.log('✅ JSON validation passed!\n')
-
-        // Generate LaTeX
-        const latex = generator.generateLaTeX()
-        console.log('✅ LaTeX generated successfully!\n')
-
-        // Save .tex file
-        await generator.saveToFile('./resume-output.tex')
-        console.log('✅ Saved to resume-output.tex\n')
-
-        // Generate PDF
-        const pdfPath = await generator.generatePDF('./resume-output.pdf')
-        console.log(`✅ PDF generated: ${pdfPath}\n`)
-
-        console.log('🎉 All tests passed!')
-    } catch (error) {
-        console.error('❌ Test failed:', error)
-        process.exit(1)
-    }
-})()
