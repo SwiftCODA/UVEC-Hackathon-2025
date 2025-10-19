@@ -66,16 +66,14 @@ export const ExperienceStep = ({ data, onChange }: ExperienceStepProps) => {
                             <h3 className="font-medium text-foreground">
                                 Position {index + 1}
                             </h3>
-                            {data.length > 1 && (
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => removeExperience(exp.id)}
-                                    className="text-destructive hover:text-destructive"
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
-                            )}
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeExperience(exp.id)}
+                                className="text-destructive hover:text-destructive"
+                            >
+                                <Trash2 className="h-4 w-4" />
+                            </Button>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -77,13 +77,7 @@ export const ResumeBuilder = () => {
         break;
       // summary removed
       case 'experience':
-        const hasValidExperience = resumeData.experience.some(
-          exp => exp.jobTitle && exp.company && exp.startDate
-        );
-        if (!hasValidExperience) {
-          toast.error('Please add at least one work experience with job title, company, and start date');
-          return false;
-        }
+        // Experience is now fully optional; always allow moving on
         break;
       case 'education':
         const hasValidEducation = resumeData.education.some(
