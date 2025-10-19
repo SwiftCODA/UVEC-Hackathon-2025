@@ -29,6 +29,9 @@ const initialData: ResumeData = {
             id: crypto.randomUUID(),
             jobTitle: '',
             company: '',
+            country: '',
+            city: '',
+            stateProvince: '',
             startDate: '',
             endDate: '',
             current: false,
@@ -83,10 +86,10 @@ export const ResumeBuilder = () => {
             case 'experience': {
                 if (resumeData.experience.length === 0) break;
                 const allValid = resumeData.experience.every(
-                    exp => exp.jobTitle && exp.company && exp.startDate
+                    exp => exp.jobTitle && exp.company && exp.country && exp.city && exp.stateProvince && exp.startDate
                 );
                 if (!allValid) {
-                    toast.error('Please fill in job title, company, and start date for all experience entries or delete incomplete ones.');
+                    toast.error('Please fill in job title, company, country, location, and start date for all experience entries or delete incomplete ones.');
                     return false;
                 }
                 break;
@@ -232,7 +235,7 @@ export const ResumeBuilder = () => {
             <div className="container mx-auto px-4 py-8 max-w-7xl">
                 <div className="mb-8 text-center">
                     <h1 className="text-4xl font-bold text-foreground mb-3">
-                        AI Resume Builder
+                        NEXT Resume
                     </h1>
                     <p className="text-muted-foreground">
                         Create a professional resume in minutes
