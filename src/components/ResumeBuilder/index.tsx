@@ -235,7 +235,7 @@ export const ResumeBuilder = () => {
             <div className="container mx-auto px-4 py-8 max-w-7xl">
                 <div className="mb-8 text-center">
                     <h1 className="text-4xl font-bold text-foreground mb-3">
-                        AI Resume Builder
+                        NEXT Resume
                     </h1>
                     <p className="text-muted-foreground">
                         Create a professional resume in minutes

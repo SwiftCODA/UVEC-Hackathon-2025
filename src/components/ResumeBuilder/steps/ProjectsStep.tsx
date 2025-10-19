@@ -64,7 +64,7 @@ export const ProjectsStep = ({ data, onChange }: ProjectsStepProps) => {
                   id={`name-${p.id}`}
                   value={p.name}
                   onChange={(e) => updateProject(p.id, 'name', e.target.value)}
-                  placeholder="AI Resume Builder"
+                  placeholder="NEXT Resume"
                   className="mt-1.5"
                 />
               </div>
